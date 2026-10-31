@@ -1,6 +1,6 @@
-// Cart. Stores ONLY {id, color, fabric, qty}. Prices are always recomputed from products.js.
+// Cart. Stores ONLY {id, color, fabric, size, counter, qty}. Prices are always recomputed from products.js.
 import { CONFIG } from './config.js';
-import { FABRICS, COLOURS, getProduct, unitPrice } from './products.js';
+import { FABRICS, COLOURS, getProduct, unitPrice, optionsText } from './products.js';
 import { validateCart, validateCartLine, cartTotal } from './validate.js';
 
 const KEY = 'wink.cart.v1';
@@ -19,7 +19,7 @@ export function createCart(storage = globalThis.localStorage) {
     try { storage?.setItem(KEY, JSON.stringify(lines)); } catch { /* storage full or blocked */ }
     listeners.forEach((fn) => fn(api.lines()));
   };
-  const same = (a, b) => a.id === b.id && a.color === b.color && a.fabric === b.fabric;
+  const same = (a, b) => a.id === b.id && a.color === b.color && a.fabric === b.fabric && (a.size ?? null) === (b.size ?? null) && (a.counter ?? null) === (b.counter ?? null);
 
   const api = {
     add(item) {
@@ -54,6 +54,7 @@ export function createCart(storage = globalThis.localStorage) {
       product: getProduct(l.id),
       colourName: COLOURS[l.color].name,
       fabricName: FABRICS[l.fabric].name,
+      optionsText: optionsText(l),
       unit: unitPrice(l),
       subtotal: unitPrice(l) * l.qty,
     })),

@@ -200,3 +200,33 @@ a:hover { color: var(--walnut-dark); }
 .gcard { margin: 0; background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column; }
 .gcard img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; background: var(--beige); display: block; }
 .gcard figcaption { display: flex; flex-direction: column; gap: .5rem; padding: .75rem; margin-top: auto; }
+
+/* Header tagline under logo */
+.brand--stack { display: grid; gap: .1rem; }
+.brand__unit { font-family: var(--font-body); font-size: .75rem; font-weight: 500; letter-spacing: .04em; color: #5E5E4A; }
+
+/* Diwali sale pop-up */
+.sale { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: var(--space-2); background: rgba(41, 41, 35, .6); }
+.sale__box { position: relative; width: min(30rem, 100%); max-height: 100%; overflow: auto; background: var(--ivory); border: 2px solid var(--walnut); padding: var(--space-4) var(--space-3) var(--space-3); text-align: center; outline: none; }
+.sale__box::before { content: ''; position: absolute; inset: 6px; border: 1px solid #B8893A; pointer-events: none; }
+.sale__x { position: absolute; top: .4rem; right: .4rem; width: 2.75rem; height: 2.75rem; border: 0; background: transparent; color: var(--charcoal); font-size: 1.75rem; line-height: 1; cursor: pointer; }
+.sale__badge { display: inline-block; margin: 0 0 var(--space-1); padding: .15rem .8rem; background: var(--walnut); color: var(--ivory); font-size: var(--t-sm); letter-spacing: .08em; text-transform: uppercase; }
+.sale__title { font-family: var(--font-display); font-size: var(--t-2xl); line-height: 1.05; margin: 0 0 var(--space-1); color: var(--walnut); }
+.sale__text { margin: 0 0 var(--space-1); }
+.sale .actions { justify-content: center; }
+
+/* Extra photos (angles) on the product page, GST note */
+.thumbs { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: var(--space-1); }
+.thumb { padding: 0; width: 4.5rem; height: 3.5rem; border: 2px solid var(--line); background: var(--beige); cursor: pointer; overflow: hidden; }
+.thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.thumb[aria-pressed='true'] { border-color: var(--walnut); }
+.gst { font-size: var(--t-sm); color: #5E5E4A; font-weight: 400; }
+
+/* Size chips (size, dimensions and price together) */
+.sizes { display: flex; flex-wrap: wrap; gap: .6rem; }
+.sizechip { display: grid; gap: .1rem; text-align: left; min-width: 9.5rem; padding: .6rem .8rem; background: #fff; border: 1px solid var(--line); color: var(--charcoal); font: inherit; cursor: pointer; }
+.sizechip:hover { border-color: var(--walnut); }
+.sizechip[aria-pressed='true'] { border: 2px solid var(--walnut); padding: calc(.6rem - 1px) calc(.8rem - 1px); background: var(--beige); }
+.sizechip__name { font-weight: 500; }
+.sizechip__dims { font-size: var(--t-sm); color: #5E5E4A; }
+.sizechip__price { font-family: var(--font-display); font-size: var(--t-lg); color: var(--walnut); }

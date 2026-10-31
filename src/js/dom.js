@@ -6,7 +6,7 @@ export const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 const ALLOWED_ATTR = new Set([
   'class', 'id', 'href', 'src', 'alt', 'type', 'name', 'value', 'for', 'role',
   'aria-label', 'aria-live', 'aria-pressed', 'aria-expanded', 'aria-controls',
-  'aria-hidden', 'aria-current', 'tabindex', 'min', 'max', 'step', 'placeholder',
+  'aria-hidden', 'aria-modal', 'aria-current', 'tabindex', 'min', 'max', 'step', 'placeholder',
   'autocomplete', 'inputmode', 'required', 'disabled', 'checked', 'selected',
   'width', 'height', 'loading', 'target', 'rel', 'data-id', 'data-color', 'data-fabric', 'rows', 'maxlength', 'minlength', 'hidden', 'novalidate', 'data-cat',
 ]);

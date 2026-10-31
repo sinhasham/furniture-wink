@@ -79,6 +79,7 @@ export const GALLERY = Object.freeze([
   {
     "ref": "bed-09",
     "cat": "beds",
+    "extra": ["bed-09-2"],
     "alt": "Storage bed with a woven-pattern panel"
   },
   {
@@ -230,5 +231,101 @@ export const GALLERY = Object.freeze([
     "ref": "panel-04",
     "cat": "panels",
     "alt": "Carved wooden name plate"
+  },
+  {
+      "ref": "bed-13",
+      "cat": "beds",
+      "alt": "Peacock carved bed with an open counter headboard"
+  },
+  {
+      "ref": "bed-14",
+      "cat": "beds",
+      "alt": "Swan carved bed with a drawer counter"
+  },
+  {
+      "ref": "bed-15",
+      "cat": "beds",
+      "alt": "Bed headboard with open counter and padded side panels"
+  },
+  {
+      "ref": "bed-16",
+      "cat": "beds",
+      "alt": "Teak bed with a diagonal slat design"
+  },
+  {
+      "ref": "bed-17",
+      "cat": "beds",
+      "alt": "Teak bed with a rail headboard and slatted footboard"
+  },
+  {
+      "ref": "bed-18",
+      "cat": "beds",
+      "alt": "Glossy teak bed with a rounded footboard"
+  },
+  {
+      "ref": "bed-19",
+      "cat": "beds",
+      "alt": "Storage bed with a grey tufted headboard"
+  },
+  {
+      "ref": "bed-20",
+      "cat": "beds",
+      "alt": "Wave carved bed with drawer counter"
+  },
+  {
+      "ref": "bed-21",
+      "cat": "beds",
+      "alt": "Shell carved headboard bed with counter drawers"
+  },
+  {
+      "ref": "bed-22",
+      "cat": "beds",
+      "alt": "Carved figure headboard bed with counter"
+  },
+  {
+      "ref": "bed-23",
+      "cat": "beds",
+      "alt": "Rustic log style bed with vertical planks"
+  },
+  {
+      "ref": "bed-24",
+      "cat": "beds",
+      "alt": "Dark walnut finish storage bed"
+  },
+  {
+      "ref": "bed-25",
+      "cat": "beds",
+      "alt": "Floral carved headboard bed with counter"
+  },
+  {
+      "ref": "door-07",
+      "cat": "doors",
+      "alt": "Carved Om main door with elephants and kalash"
+  },
+  {
+      "ref": "sofa-05",
+      "cat": "sofas",
+      "alt": "Green velvet sofa set with quilted arms"
+  },
+  {
+      "ref": "sofa-06",
+      "cat": "sofas",
+      "alt": "Teak corner sofa with jaali back",
+      "inspiration": true
+  },
+  {
+      "ref": "sofa-07",
+      "cat": "sofas",
+      "alt": "Cream sofa and armchair set with wooden frame",
+      "inspiration": true
+  },
+  {
+      "ref": "sofa-08",
+      "cat": "sofas",
+      "alt": "Teak frame sofa set with slatted sides and centre table",
+      "extra": [
+          "sofa-08-2",
+          "sofa-08-3"
+      ]
   }
-].map((x) => Object.freeze({ ...x, src: `/images/gallery/${x.ref}.jpg` })));
+].map((x) => Object.freeze({ ...x, src: `/images/gallery/${x.ref}.jpg`, images: Object.freeze([x.ref, ...(x.extra ?? [])].map((r) => `/images/gallery/${r}.jpg`)) })));

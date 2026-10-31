@@ -39,7 +39,7 @@ export function init() {
     const lines = cart.detailed();
     if (!lines.length) { summary.append(el('p', { class: 'notice' }, 'Your cart is empty. ', el('a', { href: '/shop.html' }, 'Add a product first.'))); return; }
     summary.append(el('h2', {}, 'Your items'), el('ul', { class: 'mini' }, lines.map((l) => el('li', {}, `${l.product.name}, ${l.colourName} × ${l.qty}`, el('span', {}, formatINR(l.subtotal))))),
-      el('p', { class: 'total' }, 'Total before delivery: ', el('strong', {}, formatINR(cart.total()))));
+      el('p', { class: 'total' }, 'Total incl. GST, before delivery: ', el('strong', {}, formatINR(cart.total()))));
   }
   form.addEventListener('change', drawSummary);
   cart.subscribe(drawSummary);

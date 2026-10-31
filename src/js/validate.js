@@ -1,7 +1,7 @@
 // Pure validation. Runs in the browser for friendly errors AND on the server as the real boundary.
 // Never trust the browser: the server must call these again and recompute prices from products.js.
 import { CONFIG } from './config.js';
-import { getProduct, unitPrice } from './products.js';
+import { getProduct, unitPrice, withDefaults } from './products.js';
 
 // eslint-disable-next-line no-control-regex
 const CONTROL = /[\u0000-\u001F\u007F]/g;
@@ -18,15 +18,16 @@ export function normalisePhone(raw) {
   return m ? m[1] : null;
 }
 
-/** Cart line: only {id, color, fabric, qty}. Anything else is dropped. Returns line or null. */
+/** Cart line: only {id, color, fabric, size, counter, qty}. Anything else is dropped. Missing size or counter get the design's default. Returns line or null. */
 export function validateCartLine(raw) {
   if (!raw || typeof raw !== 'object') return null;
   const { id, color, fabric } = raw;
   const qty = Number(raw.qty);
   if (typeof id !== 'string' || !ID_RE.test(id)) return null;
   if (!Number.isInteger(qty) || qty < 1 || qty > CONFIG.maxQtyPerItem) return null;
-  if (unitPrice({ id, color, fabric }) === null) return null;
-  return { id, color, fabric, qty };
+  const full = withDefaults({ id, color, fabric, size: raw.size, counter: raw.counter });
+  if (unitPrice(full) === null) return null;
+  return { id, color, fabric, size: full.size ?? null, counter: full.counter ?? null, qty };
 }
 
 export function validateCart(rawLines) {

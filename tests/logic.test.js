@@ -14,23 +14,24 @@ const good = {
 };
 
 test('catalogue: every product has valid colours, fabrics and a positive price', () => {
-  assert.equal(PRODUCTS.length, 39);
+  assert.equal(PRODUCTS.length, 57);
   for (const p of PRODUCTS) {
     assert.ok(p.price > 0 && p.colours.length && p.fabrics.length && p.isSample === true, p.id);
     assert.ok(unitPrice({ id: p.id, color: p.colours[0], fabric: p.fabrics[0] }) >= p.price);
   }
-  assert.equal(new Set(PRODUCTS.map((p) => p.id)).size, 39);
+  assert.equal(new Set(PRODUCTS.map((p) => p.id)).size, 57);
 });
 
 test('price comes from catalogue, fabric adds delta, bad combos return null', () => {
-  assert.equal(unitPrice({ id: 'sofa-01', color: 'olive', fabric: 'linen' }), 50500);
+  // 48,000 base + 5,000 GST + 2,500 linen
+  assert.equal(unitPrice({ id: 'sofa-01', color: 'olive', fabric: 'linen' }), 55500);
   assert.equal(unitPrice({ id: 'sofa-01', color: 'pink', fabric: 'linen' }), null);
   assert.equal(unitPrice({ id: 'nope', color: 'olive', fabric: 'linen' }), null);
 });
 
 test('cart line drops client-sent price and extra fields', () => {
   const line = validateCartLine({ id: 'sofa-01', color: 'olive', fabric: 'cotton', qty: 2, price: 1, evil: '<img>' });
-  assert.deepEqual(line, { id: 'sofa-01', color: 'olive', fabric: 'cotton', qty: 2 });
+  assert.deepEqual(line, { id: 'sofa-01', color: 'olive', fabric: 'cotton', size: 'seat3', counter: null, qty: 2 });
   assert.equal(validateCartLine({ id: 'sofa-01', color: 'olive', fabric: 'cotton', qty: 999 }), null);
   assert.equal(validateCartLine({ id: 'sofa-01', color: 'olive', fabric: 'cotton', qty: 1.5 }), null);
 });
@@ -72,9 +73,9 @@ test('cart store: merges lines, caps qty, survives tampered storage', () => {
   const item = { id: 'chair-04', color: 'beige', fabric: 'velvet' };
   assert.ok(cart.add(item)); assert.ok(cart.add(item));
   assert.equal(cart.count(), 2);
-  assert.equal(cart.total(), (16500 + 4000) * 2);
+  assert.equal(cart.total(), (7400 + 3000 + 4000) * 2);
   assert.equal(cart.add({ id: 'nope', color: 'x', fabric: 'y' }), false);
-  assert.deepEqual(Object.keys(JSON.parse(s.getItem('wink.cart.v1'))[0]).sort(), ['color', 'fabric', 'id', 'qty']);
+  assert.deepEqual(Object.keys(JSON.parse(s.getItem('wink.cart.v1'))[0]).sort(), ['color', 'counter', 'fabric', 'id', 'qty', 'size']);
   s.setItem('wink.cart.v1', JSON.stringify([{ id: 'chair-04', color: 'beige', fabric: 'velvet', qty: 1, price: 1 }, { id: 'bad' }]));
   assert.equal(createCart(s).count(), 0);
   s.setItem('wink.cart.v1', '{not json');
@@ -82,7 +83,7 @@ test('cart store: merges lines, caps qty, survives tampered storage', () => {
 });
 
 test('filters and INR formatting', () => {
-  assert.equal(listProducts({ category: 'sofas' }).length, 4);
+  assert.equal(listProducts({ category: 'sofas' }).length, 8);
   assert.ok(listProducts({ maxPrice: 10000 }).every((p) => p.price <= 10000));
   assert.match(formatINR(48000), /48,000/);
   assert.equal(cartTotal([]), 0);
@@ -98,7 +99,7 @@ import { validateAuth } from '../src/js/validate.js';
 test('whatsapp message: totals from catalogue, consent line only when opted in, link is encoded', () => {
   const v = validateBooking({ ...good, note: 'Call after 5pm & bring catalogue', whatsappConsent: true }, NOW).value;
   const msg = orderMessage(v);
-  assert.match(msg, /Wooden sofa set with a three-seater and armchairs, Olive, Linen x 1 = .*50,500/);
+  assert.match(msg, /Wooden sofa set with a three-seater and armchairs, Olive, Linen, 3 seater x 1 = .*55,500/);
   assert.match(msg, /STOP/);
   assert.doesNotMatch(orderMessage({ ...v, whatsappConsent: false }), /STOP/);
   const link = orderLink(v);
